@@ -8,13 +8,16 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include "GLObject.h"
 
 namespace ssl
 {
-	class Sphere
+	//TODO add from interface GLObject
+	class CubeSphere
 	{
 	public:
-		SSL_EXPORT Sphere(int size, float posX, float posY, float posZ);
+		SSL_EXPORT CubeSphere(float size, int subdivisions);
+		SSL_EXPORT CubeSphere(float size, float posX, float posY, float posZ, int subdivisions);
 		SSL_EXPORT void setColor(glm::vec3 color);
 		SSL_EXPORT std::vector<float> getVertices();
 		SSL_EXPORT std::vector<float> getColors();
@@ -23,17 +26,16 @@ namespace ssl
 		SSL_EXPORT glm::vec3 getCenter();
 
 	private:
-		std::vector<float> GLvertices;
 		std::vector<glm::vec3> vertices;
 		std::vector<float> colors;
-		std::vector<int> GLindices;
 		std::vector<glm::vec3> indices;
-		std::vector<float> GLnormals;
 		glm::vec3 center;
 
-		void Sphere::icosahedron(float posX, float posY, float posZ);
-		void Sphere::setUniqueColors();
-		std::vector<float> Sphere::convertToGLData(std::vector<glm::vec3> data);
+		void Sphere(float size, int subdivisions);
+		void SphereSide(float size, int subdivisions, glm::vec3 orientation);
+		//TODO add to base class, so that it is not in multiple classes
+		void CubeSphere::setUniqueColors();
+		std::vector<float> CubeSphere::convertToGLData(std::vector<glm::vec3> data);
 		std::vector<glm::vec3> computeNormals();
 	};
 }
