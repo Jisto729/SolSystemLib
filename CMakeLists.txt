@@ -11,6 +11,8 @@ set(SOURCE_FILES
    include/Sphere.h src/Sphere.cpp
    include/GLObject.h src/GLObject.cpp
    include/CubeSphere.h src/CubeSphere.cpp
+   include/SunTexture.h src/SunTexture.cpp
+   libs/PerlinNoise/PerlinNoise.hpp
 )
 
 find_package(glm CONFIG REQUIRED)

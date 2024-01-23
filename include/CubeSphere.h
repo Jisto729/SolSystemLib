@@ -23,12 +23,14 @@ namespace ssl
 		SSL_EXPORT std::vector<float> getColors();
 		SSL_EXPORT std::vector<float> getNormals();
 		SSL_EXPORT std::vector<int> getIndices();
+		SSL_EXPORT std::vector<float> getTexCoords();
 		SSL_EXPORT glm::vec3 getCenter();
 
 	private:
 		std::vector<glm::vec3> vertices;
 		std::vector<float> colors;
 		std::vector<glm::vec3> indices;
+		std::vector<glm::vec3> texCoords;
 		glm::vec3 center;
 
 		void Sphere(float size, int subdivisions);

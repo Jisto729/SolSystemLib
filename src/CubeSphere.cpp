@@ -9,15 +9,14 @@ using namespace ssl;
 
 CubeSphere::CubeSphere(float size, int subdivisions)
 {
-    CubeSphere::Sphere(size, subdivisions);
     center = glm::vec3(0.0, 0.0, 0.0);
+    CubeSphere::Sphere(size, subdivisions);
     setUniqueColors();
 }
 
 CubeSphere::CubeSphere(float size, float posX, float posY, float posZ, int subdivisions)
 {
     center = glm::vec3(posX, posY, posZ);
-    std::cout << glm::to_string(center) << std::endl;
     CubeSphere::Sphere(size, subdivisions);
     //TODO probably wrong here
     for (glm::vec3 vertex : vertices)
@@ -40,7 +39,6 @@ void CubeSphere::Sphere(float size, int subdivisions)
 
 void CubeSphere::SphereSide(float size, int subdivisions, glm::vec3 orientation)
 {
-    std::cout << "Side: " << glm::to_string(orientation) << std::endl;
     int startIndex = vertices.size();
     int verticesNum = pow(2, subdivisions) + 1;
     //distance between the vertices on a unit cube
@@ -50,9 +48,6 @@ void CubeSphere::SphereSide(float size, int subdivisions, glm::vec3 orientation)
     //commputing rotation angle and axis to be able to make all 6 sides of cube
     glm::vec3 rotationAxis = orientation.y != 0.0 ? glm::vec3(1.0, 0.0, 0.0) : glm::vec3(0.0, 1.0, 0.0);
     float rotationAngle = glm::orientedAngle(glm::vec3(0.0, 0.0, 1.0), orientation, rotationAxis);
-    std::cout << "vertNum:" << verticesNum << ", vertDiff:" << vertexDiff << ", angleDiff:" << angleDiff << std::endl;
-    std::cout << "rotAngle:" << rotationAngle << ", rotAxis:" << glm::to_string(rotationAxis) << std::endl;
-    std::cout << std::endl;
 
     for (int i = 0; i < verticesNum; i++)
     {
@@ -64,6 +59,9 @@ void CubeSphere::SphereSide(float size, int subdivisions, glm::vec3 orientation)
 
             point = glm::vec4(point, 1.0) * glm::rotate(glm::mat4(1.0f), rotationAngle, rotationAxis);
             vertices.push_back(point);
+
+            glm::vec3 texCoord = glm::vec3(glm::normalize(point).x, glm::normalize(point).y, glm::normalize(point).z);
+            texCoords.push_back(texCoord);
         }
     }
 
@@ -95,6 +93,12 @@ std::vector<int> CubeSphere::getIndices()
     std::vector<float> flIndices = convertToGLData(indices);
     return std::vector<int>(flIndices.begin(), flIndices.end());
 }
+
+std::vector<float> CubeSphere::getTexCoords()
+{
+    return convertToGLData(texCoords);
+}
+
 
 glm::vec3 CubeSphere::getCenter() { return center; }
 
