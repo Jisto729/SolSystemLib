@@ -19,6 +19,7 @@ namespace ssl
 		SSL_EXPORT CubeSphere(float size, int subdivisions);
 		SSL_EXPORT CubeSphere(float size, float posX, float posY, float posZ, int subdivisions);
 		SSL_EXPORT void setColor(glm::vec3 color);
+		SSL_EXPORT void CubeSphere::setUniqueColors();
 		SSL_EXPORT std::vector<float> getVertices();
 		SSL_EXPORT std::vector<float> getColors();
 		SSL_EXPORT std::vector<float> getNormals();
@@ -36,7 +37,6 @@ namespace ssl
 		void Sphere(float size, int subdivisions);
 		void SphereSide(float size, int subdivisions, glm::vec3 orientation);
 		//TODO add to base class, so that it is not in multiple classes
-		void CubeSphere::setUniqueColors();
 		std::vector<float> CubeSphere::convertToGLData(std::vector<glm::vec3> data);
 		std::vector<glm::vec3> computeNormals();
 	};

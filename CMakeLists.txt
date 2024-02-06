@@ -12,6 +12,7 @@ set(SOURCE_FILES
    include/GLObject.h src/GLObject.cpp
    include/CubeSphere.h src/CubeSphere.cpp
    include/SunTexture.h src/SunTexture.cpp
+   include/SunColors.h src/SunColors.cpp
    libs/PerlinNoise/PerlinNoise.hpp
 )
 

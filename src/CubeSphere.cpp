@@ -16,12 +16,14 @@ CubeSphere::CubeSphere(float size, int subdivisions)
 
 CubeSphere::CubeSphere(float size, float posX, float posY, float posZ, int subdivisions)
 {
+    std::cout << "here" << std::endl;
     center = glm::vec3(posX, posY, posZ);
     CubeSphere::Sphere(size, subdivisions);
     //TODO probably wrong here
-    for (glm::vec3 vertex : vertices)
+    int vertSize = vertices.size();
+    for (int i = 0; i < vertSize; i++)
     {
-        vertex += glm::vec3(posX, posY, posZ);
+        vertices[i] += glm::vec3(posX, posY, posZ);
     }
     setUniqueColors();
 }

@@ -23,7 +23,7 @@ namespace ssl
 		std::vector<std::vector<std::vector<glm::vec3>>> animateTexture();
 		void loadTextureFrames();
 		std::vector<std::vector<float>> ConvertTexture(std::vector<std::vector<std::vector<glm::vec3>>> *texture);
-		glm::vec3 getBaseColor(float noiseValue);
+		glm::vec3 getBaseColor(float noiseValue, int temperature);
 		glm::vec3 getAnimationColor(float noiseValue, float factor);
 		void fillSunTextureFace(float size, glm::vec3 orientation, int faceIndex);
 		std::vector<std::vector<std::vector<glm::vec3>>> baseTexture;

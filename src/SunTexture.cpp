@@ -1,8 +1,10 @@
 #include "../include/SunTexture.h"
+#include "../include/SunColors.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "libs/PerlinNoise/PerlinNoise.hpp"
 
 #include <iostream>
+#include <algorithm>
 #include <glm/gtx/string_cast.hpp>
 
 using namespace ssl;
@@ -59,7 +61,7 @@ void SunTexture::fillSunTextureFace(float size, glm::vec3 orientation, int faceI
 
 			point = scale * (glm::vec4(point, 1.0) * glm::rotate(glm::mat4(1.0f), rotationAngle, rotationAxis));
 			value = noise.octave3D_01(point.x, point.y, point.z, 4, 0.5);
-			baseTexture[faceIndex][i].emplace_back(getBaseColor(value));
+			baseTexture[faceIndex][i].emplace_back(getBaseColor(value, 23000));
 		}
 	}
 }
@@ -110,19 +112,11 @@ std::vector<std::vector<std::vector<glm::vec3>>> SunTexture::animateTexture()
 		{
 			for (int k = 0; k < texWidth; k++)
 			{
-				float factor;
 				//making the seams less noticable
-				if (j < 3 || j > texHeight - 3 || k < 3 || k > texWidth - 3)
-				{
-					factor = 0.0;
-				} else if (j < 6 || j > texHeight - 6 || k < 6 || k > texWidth - 6)
-				{
-					factor = 0.3;
-				} else
-				{
-					factor = 0.6;
-				}
-				newTexture[i][j][k] = baseTexture[i][j][k] + getAnimationColor(animationNoise[j / sizeRatio][k / sizeRatio], factor);// glm::vec3(0.0, 0.7 * animationNoise[j / sizeRatio][k / sizeRatio], 0.0);
+				float nearestEdge = std::min(std::min(j, texHeight - j), std::min(k, texHeight - k));
+				float factor = std::min(0.02 * nearestEdge, 0.6);
+
+				newTexture[i][j][k] = baseTexture[i][j][k] + getAnimationColor(animationNoise[j / sizeRatio][k / sizeRatio], factor);
 			}
 		}
 	}
@@ -146,16 +140,14 @@ void SunTexture::nextFrame()
 	}
 }
 
-//TODO probably add temperature
-glm::vec3 SunTexture::getBaseColor(float noiseValue)
+glm::vec3 SunTexture::getBaseColor(float noiseValue, int temperature)
 {
-	//R = 1, G = 0 - 0.85, B = 0 (gradient from red to yellow)
-	return glm::vec3(1.0, 0.85 * noiseValue, 0.0);
+	return SunColors::getSunColor(noiseValue, temperature);
 }
 
 glm::vec3 SunTexture::getAnimationColor(float noiseValue, float factor)
 {
-	return glm::vec3(0.0, factor * noiseValue, 0.0);
+	return glm::vec3(factor * noiseValue, factor* noiseValue, factor * noiseValue);
 }
 
 std::vector<std::vector<float>> SunTexture::ConvertTexture(std::vector<std::vector<std::vector<glm::vec3>>> *texture)
